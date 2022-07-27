@@ -1,0 +1,98 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/mahdi-asadzadeh/go-grpc-order-microservice/pkg/pb";
+
+message Image {
+  int64 id = 1;
+  bytes image = 2;
+  string path = 3;
+  int64 size = 4;
+  string create_at = 5;
+  string update_at = 6;
+  string delete_at = 7;
+}
+
+message Product {
+  int64 id = 1;
+  string slug = 2;
+  string title = 3;
+  string body = 4;
+  float price = 5;
+  string create_at = 6;
+  string update_at = 7;
+  string delete_at = 8;
+}
+
+// Create product intput/output
+message CreateProductRequest {
+  string slug = 1;
+  string title = 2;
+  string body = 3;
+  float price = 4;
+}
+
+message CreateProductResponse {
+  Product product = 1;
+}
+// ----------------------------
+
+// List product intput/output
+message ListProductRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+}
+
+message ListProductResponse {
+  Product product = 1;
+}
+// ----------------------------
+
+
+// Detail product intput/output
+message DetailProductRequest {
+  int64 id = 1;
+}
+
+message DetailProductResponse {
+  Product product = 1;
+}
+// ----------------------------
+
+// Images product intput/output
+message ImagesProductRequest {
+  int64 product_id = 1;
+}
+
+message ImagesProductResponse {
+  Image image = 1;
+}
+// ----------------------------
+
+// Images product intput/output
+message UploadImagesProductRequest {
+  int64 product_id = 1;
+  bytes image = 2;
+  string path = 3;
+  int64 size = 4;
+
+}
+
+message UploadImagesProductResponse {
+  int64 id = 1;
+  string path = 3;
+  int64 size = 4;
+  string create_at = 5;
+  string update_at = 6;
+  string delete_at = 7;
+}
+// ----------------------------
+
+service ProductService {
+  rpc CreateProduct (CreateProductRequest) returns (CreateProductResponse) {};
+  rpc ListProduct (ListProductRequest) returns (stream ListProductResponse) {};
+  rpc DetailProduct (DetailProductRequest) returns (DetailProductResponse) {};
+  rpc ImagesProduct (ImagesProductRequest) returns (stream ImagesProductResponse) {};
+  rpc UploadImagesProduct (stream UploadImagesProductRequest) returns (UploadImagesProductResponse) {};
+}
